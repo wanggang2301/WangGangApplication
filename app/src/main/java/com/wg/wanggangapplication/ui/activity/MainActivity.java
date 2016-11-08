@@ -25,6 +25,10 @@ import com.wg.wanggangapplication.ui.fragment.VideoFragment;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
+    /**
+     * 主Activity
+     */
+
     private Fragment fragment;
 
     private Toolbar toolbar;
