@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="拍照" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="新闻" />
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="视频" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="工具" />
+
+        <item
+            android:id="@+id/nav_chart"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="图表" />
+
+        <item
+            android:id="@+id/nav_request"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="框架及方法" />
+
+
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+            <item
+                android:id="@+id/nav_send1"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+            <item
+                android:id="@+id/nav_send2"
+                android:icon="@drawable/ic_menu_send"
+                android:title="MD登录风格" />
+            <item
+                android:id="@+id/nav_send3"
+                android:icon="@drawable/ic_menu_send"
+                android:title="轻量开源相册Album" />
+            <item
+                android:id="@+id/nav_send4"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Floating view" />
+        </menu>
+    </item>
+
+</menu>
