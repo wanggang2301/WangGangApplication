@@ -30,7 +30,10 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * A simple {@link Fragment} subclass.
+ *@author: wanggang2301@outlook.com
+ *@Name：wanggang
+ *@Description:
+ *@Created on:2016/11/08
  */
 public class FrameWorkAndMethodFragment extends Fragment {
 

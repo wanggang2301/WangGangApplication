@@ -35,7 +35,10 @@ import com.wg.wanggangapplication.R;
 import com.wg.wanggangapplication.utils.UiUtils;
 
 /**
- * A simple {@link Fragment} subclass.
+ *@author: wanggang2301@outlook.com
+ *@Name：wanggang
+ *@Description:
+ *@Created on:2016/11/08
  */
 public class FloatingViewFragment extends Fragment {
 

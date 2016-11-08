@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import com.wg.wanggangapplication.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ *@author: wanggang2301@outlook.com
+ *@Name：wanggang
+ *@Description:
+ *@Created on:2016/11/08
  */
 public class ChartFragment extends Fragment {
 
