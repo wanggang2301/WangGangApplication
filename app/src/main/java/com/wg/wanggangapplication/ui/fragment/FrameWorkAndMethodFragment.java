@@ -91,13 +91,22 @@ public class FrameWorkAndMethodFragment extends Fragment {
 
     private static final String ENDPOINT = "http://m.13322.com";
 
+
+    /**
+     *retrofit请求方法
+     * 一个针对Android和Java类型安全的http客户端
+     */
     private void requestData() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ENDPOINT)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
+
+
         ApiService apiService = retrofit.create(ApiService.class);
+
+
         apiService.getIpInfo("302001", "zh")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
