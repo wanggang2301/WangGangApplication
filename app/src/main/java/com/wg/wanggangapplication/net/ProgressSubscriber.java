@@ -16,6 +16,7 @@ public  class ProgressSubscriber<T> extends Subscriber<T> {
     private SubscriberOnNextListener mSubscriberOnNextListener;
     private Context context;
 
+
     public ProgressSubscriber(SubscriberOnNextListener mSubscriberOnNextListener, Context context) {
         this.mSubscriberOnNextListener = mSubscriberOnNextListener;
         this.context = context;

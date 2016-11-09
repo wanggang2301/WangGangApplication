@@ -30,10 +30,10 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- *@author: wanggang2301@outlook.com
- *@Name：wanggang
- *@Description:
- *@Created on:2016/11/08
+ * @author: wanggang2301@outlook.com
+ * @Name：wanggang
+ * @Description:
+ * @Created on:2016/11/08
  */
 public class FrameWorkAndMethodFragment extends Fragment {
 
@@ -50,7 +50,9 @@ public class FrameWorkAndMethodFragment extends Fragment {
     TextView retrofitOkhttpResult;
 
 
+    //自定义的一个请求成功的接口OnNext
     private SubscriberOnNextListener getTopMovieOnNext;
+
 
     public FrameWorkAndMethodFragment() {
         // Required empty public constructor
@@ -77,6 +79,7 @@ public class FrameWorkAndMethodFragment extends Fragment {
                 retrofitOkhttpResult.setText(
                         subjects.get(0).getTitle() + "");
             }
+
         };
 
         retrofitOkhttp.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +96,7 @@ public class FrameWorkAndMethodFragment extends Fragment {
 
 
     /**
-     *retrofit请求方法
+     * retrofit请求方法
      * 一个针对Android和Java类型安全的http客户端
      */
     private void requestData() {
@@ -134,51 +137,75 @@ public class FrameWorkAndMethodFragment extends Fragment {
     //进行网络请求
     private void getMovie() {
 
-
-
-       /* subscriber = new Subscriber<MovieEntity>() {
+        /**
+         * retrofit +Rxjava、RxAndroid
+         * 获取全部对象
+         * 在HttpMethods中封装RxAndroid
+         * 有使用OkHttpClient
+         */
+       /* Subscriber subscriber = new Subscriber<MovieEntity>() {
             @Override
             public void onCompleted() {
-                Toast.makeText(ReftrofitActivity.this, "Get Top Movie Completed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Get Top Movie Completed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(Throwable e) {
-                resultTV.setText(e.getMessage());
+                retrofitOkhttpResult.setText(e.getMessage());
             }
 
             @Override
             public void onNext(MovieEntity movieEntity) {
-                resultTV.setText(movieEntity.getTitle()+"");
+                retrofitOkhttpResult.setText(movieEntity.getTitle() + "");
             }
-        };*/
+        };
 
-       /* subscriber = new Subscriber<List<Subject>>() {
+        HttpMethods.getInstance().getTopMovie2(subscriber, 0, 10);*/
+
+
+        /**
+         * retrofit+Rxjava、RxAndroid
+         * 获取对象其中的list
+         * 在HttpMethods中封装RxAndroid
+         * 有使用OkHttpClient
+         */
+/*
+        Subscriber subscriber = new Subscriber<List<Subject>>() {
             @Override
             public void onCompleted() {
-                Toast.makeText(ReftrofitActivity.this, "Get Top Movie Completed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Get Top Movie Completed", Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
             public void onError(Throwable e) {
-                resultTV.setText(e.getMessage());
+                retrofitOkhttpResult.setText(e.getMessage());
 
             }
 
             @Override
             public void onNext(List<Subject> listHttpResult) {
-                resultTV.setText(listHttpResult.get(0).getTitle() + "");
+                retrofitOkhttpResult.setText(listHttpResult.get(0).getTitle() + "");
             }
         };
-
-        HttpMethods.getInstance().getTopMovie(subscriber, 0, 10);
-*/
+        HttpMethods.getInstance().getTopMovie(subscriber, 0, 10);*/
 
 
+        /**
+         * 全部封装
+         * 请求成功数据接口处理，共用一套错误处理代码
+         * 一句话搞定
+         */
         HttpMethods.getInstance().getTopMovie(new ProgressSubscriber(getTopMovieOnNext, getActivity()), 0, 10);
 
-        /*String baseUrl = "https://api.douban.com/v2/movie/";
+
+        /**
+         * retrofit+Rxjava
+         *
+         * 没有封装Rxjava
+         */
+
+      /*  String baseUrl = "https://api.douban.com/v2/movie/";
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
@@ -188,39 +215,55 @@ public class FrameWorkAndMethodFragment extends Fragment {
 
         MovieService movieService = retrofit.create(MovieService.class);
 
-        movieService.getTopMoive(0, 10)
+        movieService.getTopMoive2(0, 10)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<MovieEntity>() {
                     @Override
                     public void onCompleted() {
-                        Toast.makeText(ReftrofitActivity.this, "Get Top Movie Completed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Get Top Movie Completed", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        resultTV.setText(e.getMessage());
+                        retrofitOkhttpResult.setText(e.getMessage());
                     }
 
                     @Override
                     public void onNext(MovieEntity movieEntity) {
-                        resultTV.setText(movieEntity.getTitle() + "");
+                        retrofitOkhttpResult.setText(movieEntity.getTitle() + "");
 
                     }
-                });
-        *//*Call<MovieEntity> call=movieService.getTopMoive(0,10);
+                });*/
+
+
+        /**
+         *
+         * retrofit
+         * Call
+         */
+     /*   String baseUrl = "https://api.douban.com/v2/movie/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())  //添加这句代码sevice返回值不在是Call,而是一个Observable
+                .build();
+
+        MovieService movieService = retrofit.create(MovieService.class);
+
+        Call<MovieEntity> call = movieService.getTopMoive(0, 10);
+
         call.enqueue(new Callback<MovieEntity>() {
             @Override
             public void onResponse(Call<MovieEntity> call, Response<MovieEntity> response) {
-                resultTV.setText(response.body().getTitle()+"");
+                retrofitOkhttpResult.setText(response.body().getTitle() + "");
             }
 
             @Override
             public void onFailure(Call<MovieEntity> call, Throwable t) {
-                resultTV.setText(t.getMessage());
+                retrofitOkhttpResult.setText(t.getMessage());
             }
         });*/
-
     }
-
 }

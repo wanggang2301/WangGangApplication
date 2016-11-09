@@ -1,5 +1,6 @@
 package com.wg.wanggangapplication.net;
 
+import com.wg.wanggangapplication.model.MovieEntity;
 import com.wg.wanggangapplication.model.Subject;
 import com.wg.wanggangapplication.service.MovieService;
 
@@ -63,13 +64,23 @@ public class HttpMethods {
      * @param count      获取长度
      */
     public void getTopMovie(Subscriber<List<Subject>> subscriber, int start, int count) {
-        movieService.getTopMoive(start, count)
+        movieService.getTopMoive3(start, count)
                 .map(new HttpResultFunc<List<Subject>>())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
+
+
+    public void getTopMovie2(Subscriber<MovieEntity> subscriber, int start, int count) {
+        movieService.getTopMoive2(start, count)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
 
     private class HttpResultFunc<T> implements Func1<HttpResult<T>, T> {
         @Override
