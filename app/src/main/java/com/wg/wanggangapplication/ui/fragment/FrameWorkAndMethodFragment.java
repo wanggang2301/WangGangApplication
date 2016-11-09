@@ -195,6 +195,7 @@ public class FrameWorkAndMethodFragment extends Fragment {
          * 全部封装
          * 请求成功数据接口处理，共用一套错误处理代码
          * 一句话搞定
+         * retrofit+Rxjava+OkHttp
          */
         HttpMethods.getInstance().getTopMovie(new ProgressSubscriber(getTopMovieOnNext, getActivity()), 0, 10);
 
