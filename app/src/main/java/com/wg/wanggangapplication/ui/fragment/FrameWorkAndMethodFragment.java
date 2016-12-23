@@ -12,13 +12,17 @@ import android.widget.TextView;
 
 import com.wg.wanggangapplication.R;
 import com.wg.wanggangapplication.model.Subject;
+import com.wg.wanggangapplication.model.response.FootBallDetailsBean;
 import com.wg.wanggangapplication.model.response.GetIpInfoResponse;
 import com.wg.wanggangapplication.net.HttpMethods;
 import com.wg.wanggangapplication.net.ProgressSubscriber;
 import com.wg.wanggangapplication.service.ApiService;
 import com.wg.wanggangapplication.service.SubscriberOnNextListener;
+import com.wg.wanggangapplication.utils.L;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +52,12 @@ public class FrameWorkAndMethodFragment extends Fragment {
     Button retrofitOkhttp;
     @BindView(R.id.retrofit_okhttp_result)
     TextView retrofitOkhttpResult;
+    @BindView(R.id.btn_football_result)
+    Button btnFootballResult;
+    @BindView(R.id.football_result)
+    TextView footballResult;
+    @BindView(R.id.football_error)
+    TextView footballError;
 
 
     //自定义的一个请求成功的接口OnNext
@@ -75,17 +85,48 @@ public class FrameWorkAndMethodFragment extends Fragment {
 
         getTopMovieOnNext = new SubscriberOnNextListener<List<Subject>>() {
             @Override
+            public void onNext(List<Subject> o) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        };
+
+
+/*
+        getTopMovieOnNext = new SubscriberOnNextListener<List<Subject>>() {
+            @Override
             public void onNext(List<Subject> subjects) {
                 retrofitOkhttpResult.setText(
                         subjects.get(0).getTitle() + "");
             }
 
-        };
+        };*/
+
+      /*  getFootBallDetailsOnNext = new SubscriberOnNextListener(List<Subject>) {
+            @Override
+            public void onNext(List<Subject> o) {
+
+            }
+        };*/
+
 
         retrofitOkhttp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getMovie();
+            }
+        });
+
+        btnFootballResult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                getFootballDetails();
+                //  startTimer();
             }
         });
 
@@ -197,8 +238,21 @@ public class FrameWorkAndMethodFragment extends Fragment {
          * 一句话搞定
          * retrofit+Rxjava+OkHttp
          */
-        HttpMethods.getInstance().getTopMovie(new ProgressSubscriber(getTopMovieOnNext, getActivity()), 0, 10);
+        // HttpMethods.getInstance().getTopMovie(new ProgressSubscriber(getTopMovieOnNext, getActivity()), 0, 10);
 
+
+        HttpMethods.getInstance().getTopMovie(new ProgressSubscriber(new SubscriberOnNextListener<List<Subject>>() {
+
+            @Override
+            public void onNext(List<Subject> subjects) {
+                retrofitOkhttpResult.setText(subjects.get(0).getTitle() + "");
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        }, getActivity()), 0, 10);
 
         /**
          * retrofit+Rxjava
@@ -266,5 +320,47 @@ public class FrameWorkAndMethodFragment extends Fragment {
                 retrofitOkhttpResult.setText(t.getMessage());
             }
         });*/
+    }
+
+
+    private Timer timer;
+    private TimerTask timerTask;
+
+    private int success = 0;
+    private int error = 0;
+
+
+    private void startTimer() {
+        timer = new Timer();
+
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                L.i("wangg", "__________polling");
+
+                getFootballDetails();
+            }
+        };
+
+        timer.schedule(timerTask, 1000, 5000);
+    }
+
+    private void getFootballDetails() {
+        HttpMethods.getInstance().getFootballDetailsData(new ProgressSubscriber(new SubscriberOnNextListener<FootBallDetailsBean>() {
+            @Override
+            public void onNext(FootBallDetailsBean footBallDetailsBean) {
+                if ("200".equals(footBallDetailsBean.getResult())) {
+                    //  footballResult.setText(footBallDetailsBean.getHomeTeamInfo().getName());
+                    success++;
+                    footballResult.setText(success + "");
+                }
+            }
+
+            @Override
+            public void onError() {
+                error++;
+                footballError.setText(error + "");
+            }
+        }, getActivity()), "zh", "8", "402944");
     }
 }

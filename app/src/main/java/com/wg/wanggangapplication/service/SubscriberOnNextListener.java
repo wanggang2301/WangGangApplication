@@ -7,4 +7,6 @@ package com.wg.wanggangapplication.service;
  */
 public interface SubscriberOnNextListener<T> {
     void onNext(T t);
+
+    void onError();
 }

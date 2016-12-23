@@ -34,6 +34,7 @@ public  class ProgressSubscriber<T> extends Subscriber<T> {
     @Override
     public void onError(Throwable e) {
         Toast.makeText(context, "error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

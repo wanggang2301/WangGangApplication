@@ -2,6 +2,8 @@ package com.wg.wanggangapplication.net;
 
 import com.wg.wanggangapplication.model.MovieEntity;
 import com.wg.wanggangapplication.model.Subject;
+import com.wg.wanggangapplication.model.response.FootBallDetailsBean;
+import com.wg.wanggangapplication.service.FootBallApiService;
 import com.wg.wanggangapplication.service.MovieService;
 
 import java.util.List;
@@ -24,11 +26,16 @@ import rx.schedulers.Schedulers;
 public class HttpMethods {
 
     public static final String BASE_URL = "https://api.douban.com/v2/movie/";
+    public static final String FOOTBALL_BASE_URL = "https://api.douban.com/v2/movie/";
+    private static final String ENDPOINT = "http://m.13322.com";
 
     private static final int DEFAULT_TIMEOUT = 5;
 
     private Retrofit retrofit;
     private MovieService movieService;
+
+    private FootBallApiService footBallApiService;
+    private Retrofit footballRetrofit;
 
     //构造方法私有
     private HttpMethods() {
@@ -44,6 +51,16 @@ public class HttpMethods {
                 .build();
 
         movieService = retrofit.create(MovieService.class);
+
+
+        footballRetrofit = new Retrofit.Builder()
+                .client(httpClientBuilder.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .baseUrl(ENDPOINT)
+                .build();
+
+        footBallApiService = footballRetrofit.create(FootBallApiService.class);
     }
 
     //在访问HttpMethods时创建单例
@@ -75,6 +92,18 @@ public class HttpMethods {
 
     public void getTopMovie2(Subscriber<MovieEntity> subscriber, int start, int count) {
         movieService.getTopMoive2(start, count)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    /***
+     * 获取足球内页请求数据
+     */
+
+    public void getFootballDetailsData(Subscriber<FootBallDetailsBean> subscriber, String lang, String timeZone, String thirdId) {
+        footBallApiService.getFootBallDetails(lang, timeZone, thirdId)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
